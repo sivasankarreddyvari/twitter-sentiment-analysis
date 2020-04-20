@@ -50,7 +50,7 @@ Create a new app on Twitter account and configure the OAuth credentials.
 5. Scroll to the bottom of the page and click the Create My Access Tokens button. 
 6. Copy Consumer Key, Consumer Secret, Access Token, Access Token Secret.
 
-![alt text](OUTPUT/twitter-credentials.PNG "Description goes here")
+![alt text](OUTPUT/twitter-credentials.png "Description goes here")
 
 PART-I, Collecting Tweets
 To swim with the twitter stream, we need some tools:
@@ -61,60 +61,60 @@ You can find the full code here, producerTwitterStream.py
 
 At first, we import all required modules and provide the twitter API tokens to connect twitter to stream data.
 
-![alt text](OUTPUT/part1-1.PNG "Description goes here")
+![alt text](OUTPUT/part1-1.png "Description goes here")
 
 Then we define a StdOutListener who listener on the Stream the function on_data() defines what we want to do with every tweet we get. The function cleanTweet() cleans every tweet by just extracting the user, date and the text. After this the tweet is send to the topic "tweets".
 
-![alt text](OUTPUT/part1-2.PNG "Description goes here")
+![alt text](OUTPUT/part1-2.png "Description goes here")
 
 Besides the API-Token we give the Tweepy Stream object our StdOutListener and set a filter to some hashtag we want to track. That's it.
 
-![alt text](OUTPUT/part1-3.PNG "Description goes here")
+![alt text](OUTPUT/part1-3.png "Description goes here")
 
 Once run producerTwitterStream.py file, it starts streaming the live tweets like below:
 
-![alt text](OUTPUT/part1-4.PNG "Description goes here")
+![alt text](OUTPUT/part1-4.png "Description goes here")
 
 Start Kafka-Python module to send the tweets to the Kafka server, 
 •	Start zookeeper, C:\Users\shiva\kafka2_12\bin\windows>zookeeper-server-start.bat ..\..\config\zookeeper.properties
 •	Start kafka Server, C:\Users\shiva\kafka2_12\bin\windows>kafka-server-start.bat ..\..\config\server.properties
 •	Start consumer to consume tweets, C:\Users\shiva\kafka2_12\bin\windows>kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic tweets_new --from-beginning
 
-![alt text](OUTPUT/part1-5.PNG "Description goes here")
+![alt text](OUTPUT/part1-5.png "Description goes here")
 
-![alt text](OUTPUT/part1-6.PNG "Description goes here")
+![alt text](OUTPUT/part1-6.png "Description goes here")
 
 
 PART II, Launch Elasticsearch
 •	Change the directory to the Elasticsearch\bin folder and type elasticsearch.dat to launch
 •	After data process in spark, we push the data to elasticsearch
 
-![alt text](OUTPUT/part2-1.PNG "Description goes here")
+![alt text](OUTPUT/part2-1.png "Description goes here")
 
 Part-III, Consume the tweets
 To consume the tweets we can use a Python Kafka-Consumer or a cool PySpark-Consumer processing the tweets inside a cluster. The code of the second option you can find inside  consumeTwitterSparkData.py.
 
 First of all we import all required modules as shown below:
 
-![alt text](OUTPUT/part3-1.PNG "Description goes here")
+![alt text](OUTPUT/part3-1.pmg "Description goes here")
 
 First of all we create a SparkContext with our appName, then we create the StreamingContext with the SparkContext an let it wait for 3 seconds to consume the next package of tweets. After that we use the StreamingContext to build a KafkaConsumer and for each RDD we get from the Stream we call the function do_process(). As long as we don't kill the process tis code will run to infinity (and beyond).
 
-![alt text](OUTPUT/part3-2.PNG "Description goes here")
+![alt text](OUTPUT/part3-2.png "Description goes here")
 
 Inside the do_process() function we process the tweets and for every tweet we call the sentimentAnalysis() function othergiving the text of the tweet. The result of this function will added to the data as column "sentiment".
 
-![alt text](OUTPUT/part3-3.PNG "Description goes here")
+![alt text](OUTPUT/part3-3.png "Description goes here")
 
 Inside the sentimentAnalysis() function we processing the text of the tweet with the SentimentAnalyzer of NLTK Vader, which gives us some scores other the positive, negative and neutral elements of the text and a calculated compound score from -1 (Negative) to 1 (Positive) and between. These information can be added returned to the tweet data
 
-![alt text](OUTPUT/part3-4.PNG "Description goes here")
+![alt text](OUTPUT/part3-4.png "Description goes here")
 
 Still inside the do_process() function we can now send our result to elasticsearch and build a dashboard with kibana. The sth2elastic() function will do the job for us.
 
-![alt text](OUTPUT/part3-5.PNG "Description goes here")
+![alt text](OUTPUT/part3-5.png "Description goes here")
 
-![alt text](OUTPUT/part3-6.PNG "Description goes here")
+![alt text](OUTPUT/part3-6.png "Description goes here")
 
 Run consumeTwitterSparkData.ipynb from jupyter notebook, So we can now send our result to elasticsearch and build a dashboard with kibana.
 
@@ -122,11 +122,11 @@ PART IV, Data Visualization (Dashboard):
 
 In a few seconds after the python script starts to run, launch Kibana by changing the directory to the Kibana\bin folder and type kibana.dat
 
-![alt text](OUTPUT/part4-1.PNG "Description goes here")
+![alt text](OUTPUT/part4-1.png "Description goes here")
 
 go to http://localhost:5601, move to Management --> Index -->+ Create Index Pattern to create an index name or pattern.
 
-![alt text](OUTPUT/part4-2.PNG "Description goes here")
+![alt text](OUTPUT/part4-2.png "Description goes here")
 
 Now the Tweets are saved inside the "tweets_new" Index of Elasticsearch and we can build a dashboard that refreshes every few seconds.
 
@@ -136,7 +136,7 @@ In the dashboard we are trying to show the sentiment analysis in different ways 
 •	Showing as bar chart the top 10 users who tweeted as negative/positive/neutral against keyword #Trump
 •	For the #Trump keyword showing as bar/Horizontal bar/line charts the total number of negative/positive/neutral tweets
 
-![alt text](OUTPUT/part4-3.PNG "Description goes here")
+![alt text](OUTPUT/part4-3.png "Description goes here")
 
 
 
