@@ -9,10 +9,10 @@ FOLLOW BELOW STEPS TO EXECUTE THIS PROJECT
 4. start zookeeper server
 5. start kafka server
 6. create topic in kafka
-7. run python twitterstreamproducer.py
+7. run python producer.py
 8. using above created topic, run kafka consumer to consume tweets from 7th point
 9. start kibana
-10. From jupyter notebook (open anaconda3 and type jupyter nontebook from ternimal. this opens the notebook in browser ) run the twittersparkconsumer file
+10. From jupyter notebook (open anaconda3 and type jupyter nontebook from ternimal. this opens the notebook in browser ) run the consumer file
 11. start building dashboard in kibana
 
 
