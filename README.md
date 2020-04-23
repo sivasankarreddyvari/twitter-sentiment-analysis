@@ -96,7 +96,7 @@ To consume the tweets we can use a Python Kafka-Consumer or a cool PySpark-Consu
 
 First of all we import all required modules as shown below:
 
-![alt text](OUTPUT/part3-1.pmg "Description goes here")
+![alt text](OUTPUT/part3-1.png "Description goes here")
 
 First of all we create a SparkContext with our appName, then we create the StreamingContext with the SparkContext an let it wait for 3 seconds to consume the next package of tweets. After that we use the StreamingContext to build a KafkaConsumer and for each RDD we get from the Stream we call the function do_process(). As long as we don't kill the process tis code will run to infinity (and beyond).
 
